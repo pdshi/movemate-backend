@@ -1,0 +1,24 @@
+{
+  "name": "user-backend",
+  "version": "1.0.0",
+  "description": "Backend for user of Move Mate",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pdshi/user-backend.git"
+  },
+  "author": "Pemuda Sehat Indonesia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pdshi/user-backend/issues"
+  },
+  "homepage": "https://github.com/pdshi/user-backend#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "sequelize": "^6.31.1"
+  }
+}
