@@ -7,9 +7,8 @@ const router = express.Router();
 
 // TODO: Implement firebase LOGIN method
 router.post('/firebase', verifyFirebaseToken, firebaseLogin);
-// router.post('/login', login);
 
-// TODO: implement register method
+// router.post('/login', login);
 router.post('/register', register);
 
 module.exports = router;
