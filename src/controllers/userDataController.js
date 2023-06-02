@@ -3,22 +3,30 @@ const UserData = require('../models/userDataModel');
 const inputUserData = async (req, res) => {
 
     const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
-
     const user_id = req.decodedToken;
 
-    let userData = await UserData.findOne({ where: { user_id } });
-    if (userData) {
+    try {
 
-        return res.status(409).json({ success: false, message: 'User data already exists' });
+        let userData = await UserData.findOne({ where: { user_id } });
+        if (userData) {
 
-    } else {
+            return res.status(409).json({ success: false, message: 'User data already exists' });
 
-        userData = await UserData.create({ user_id, gender, age, height, weight, goal, goal_weight, spare_days });
+        } else {
+
+            userData = await UserData.create({ user_id, gender, age, height, weight, goal, goal_weight, spare_days });
+
+        }
+
+        return res.status(200).json({ status: true, message: 'User data created successfully' });
+
+    } catch (error) {
+
+        // Handle any errors that occur during the process
+        console.error(error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
 
     }
-
-    return res.status(200).json({ status: true, message: 'User data created successfully' });
-
 }
 
 const getUserData = async (req, res) => {
@@ -26,17 +34,23 @@ const getUserData = async (req, res) => {
     const { user_id } = req.decodedToken;
 
     try {
+
         const userData = await UserData.findOne({ where: { user_id } });
 
         if (!userData) {
+
             return res.status(404).json({ success: false, message: 'User data not found' });
+
         }
 
         return res.status(200).json({ status: true, message: 'User data found', data: userData });
+
     } catch (error) {
+
         // Handle any errors that occur during the process
         console.error(error);
         return res.status(500).json({ success: false, message: 'Internal server error' });
+
     }
 };
 
@@ -47,10 +61,13 @@ const editUserData = async (req, res) => {
     const user_id = req.decodedToken;
 
     try {
+
         let userData = await UserData.findOne({ where: { user_id } });
 
         if (!userData) {
+
             return res.status(404).json({ success: false, message: 'User data not found' });
+
         }
 
         userData.gender = gender ?? userData.gender;
@@ -64,9 +81,18 @@ const editUserData = async (req, res) => {
         await userData.save();
 
         return res.status(200).json({ status: true, message: 'User data updated successfully' });
+
     } catch (error) {
+
         // Handle any errors that occur during the process
         console.error(error);
         return res.status(500).json({ success: false, message: 'Internal server error' });
+
     }
+};
+
+module.exports = {
+    inputUserData,
+    getUserData,
+    editUserData
 };
