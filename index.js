@@ -9,6 +9,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', require('./routes/authRoutes'));
+app.use('/userdata', require('./routes/userDataRoutes'));
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
