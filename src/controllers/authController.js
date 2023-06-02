@@ -90,7 +90,7 @@ const login = async (req, res) => {
         }
 
         // Create and assign a token
-        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url }, process.env.JWTSECRET, { expiresIn: '365d' });
+        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
         res.cookie('token', `Bearer ${token}`, {
@@ -133,7 +133,7 @@ const firebaseLogin = async (req, res) => {
         user.photo_url = photo_url;
         await user.save();
 
-        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url }, process.env.JWTSECRET, { expiresIn: '365d' });
+        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
         res.cookie('token', `Bearer ${token}`, {
@@ -145,6 +145,7 @@ const firebaseLogin = async (req, res) => {
     } catch (err) {
 
         console.error('Error verifying Firebase ID token or accessing database:', err);
+
         return res.status(500).send({ status: false, message: 'Error verifying ID token or accessing database' });
 
     }
