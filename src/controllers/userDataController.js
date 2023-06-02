@@ -20,3 +20,19 @@ const inputUserData = async (req, res) => {
     return res.status(200).json({ status: true, message: 'User data created successfully' });
 
 }
+
+const getUserData = async (req, res) => {
+
+    const user_id = req.decodedToken.user_id;
+
+    // find user data 
+    let userData = await UserData.findOne({ where: { user_id } });
+    if (!userData) {
+
+        return res.status(404).json({ success: false, message: 'User data not found' });
+
+    }
+
+    return res.status(200).json({ status: true, message: 'User data found', data: userData });
+
+}
