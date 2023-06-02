@@ -6,8 +6,7 @@ const { login, register, firebaseLogin } = require('../controllers/authControlle
 const router = express.Router();
 
 router.post('/firebase', verifyFirebaseToken, firebaseLogin);
-
-// router.post('/login', login);
+router.post('/login', login);
 router.post('/register', register);
 
 module.exports = router;

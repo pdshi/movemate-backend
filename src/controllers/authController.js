@@ -53,6 +53,58 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
 
+    const { email, password } = req.body;
+
+    // Check if the email and password are empty
+    if (!email || !password) {
+
+        return res.status(400).json({ success: false, message: 'Email and Password are required' });
+
+    }
+
+    // Validate the email input
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+
+        return res.status(400).json({ success: false, message: 'Invalid email' });
+
+    }
+
+    try {
+
+        // Check if the admin already exists
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+
+            return res.status(404).json({ success: false, message: 'User not found' });
+
+        }
+
+        // Check if the password is correct
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+
+            return res.status(400).json({ success: false, message: 'Invalid password' });
+
+        }
+
+        // Create and assign a token
+        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url }, process.env.JWTSECRET, { expiresIn: '365d' });
+
+        // Set cookies in the response
+        res.cookie('token', `Bearer ${token}`, {
+            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+        });
+
+        res.status(200).json({ success: true, message: 'Logged in successfully' });
+
+    } catch (err) {
+
+        console.log(err);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+
+    }
 }
 
 const firebaseLogin = async (req, res) => {
@@ -93,7 +145,6 @@ const firebaseLogin = async (req, res) => {
     } catch (err) {
 
         console.error('Error verifying Firebase ID token or accessing database:', err);
-
         return res.status(500).send({ status: false, message: 'Error verifying ID token or accessing database' });
 
     }
