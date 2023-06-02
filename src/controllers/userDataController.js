@@ -4,7 +4,7 @@ const inputUserData = async (req, res) => {
 
     const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
 
-    const user_id = req.decodedToken.user_id;
+    const user_id = req.decodedToken;
 
     let userData = await UserData.findOne({ where: { user_id } });
     if (userData) {
@@ -23,24 +23,28 @@ const inputUserData = async (req, res) => {
 
 const getUserData = async (req, res) => {
 
-    const user_id = req.decodedToken.user_id;
+    const { user_id } = req.decodedToken;
 
-    // find user data 
-    let userData = await UserData.findOne({ where: { user_id } });
-    if (!userData) {
+    try {
+        const userData = await UserData.findOne({ where: { user_id } });
 
-        return res.status(404).json({ success: false, message: 'User data not found' });
+        if (!userData) {
+            return res.status(404).json({ success: false, message: 'User data not found' });
+        }
 
+        return res.status(200).json({ status: true, message: 'User data found', data: userData });
+    } catch (error) {
+        // Handle any errors that occur during the process
+        console.error(error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
     }
+};
 
-    return res.status(200).json({ status: true, message: 'User data found', data: userData });
-
-}
 
 const editUserData = async (req, res) => {
 
     const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
-    const user_id = req.decodedToken.user_id;
+    const user_id = req.decodedToken;
 
     try {
         let userData = await UserData.findOne({ where: { user_id } });
