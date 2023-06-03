@@ -15,7 +15,7 @@ WorkoutData.init(
             allowNull: false,
         },
         calories_per_reps: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.DOUBLE(5, 2),
             allowNull: false,
         },
         bicep: {
