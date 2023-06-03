@@ -4,7 +4,7 @@ const sequelize = new Sequelize(process.env.PGDATABASE, process.env.PGUSER, proc
     {
         host: process.env.PGHOST,
         port: process.env.PGPORT,
-        dialect: 'postgres',
+        dialect: 'mysql',
     });
 
 module.exports = sequelize;
