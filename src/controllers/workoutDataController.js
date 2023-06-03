@@ -104,8 +104,42 @@ const editWorkoutData = async (req, res) => {
     }
 };
 
+const deleteWorkoutData = async (req, res) => {
+
+    const { type } = req.body;
+    const { role } = req.decodedToken;
+
+    if (role !== 'admin') {
+
+        return res.status(403).json({ success: false, message: 'You are not authorized to perform this action' });
+
+    }
+
+    try {
+
+        let workoutData = await WorkoutData.findOne({ where: { type } });
+        if (!workoutData) {
+
+            return res.status(404).json({ success: false, message: 'Workout data not found' });
+
+        }
+
+        await workoutData.destroy();
+
+        return res.status(200).json({ status: true, message: 'Workout data deleted successfully' });
+
+    } catch (error) {
+
+        // Handle any errors that occur during the process
+        console.error(error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+
+    }
+};
+
 module.exports = {
     inputWorkoutData,
     getWorkoutData,
-    editWorkoutData
+    editWorkoutData,
+    deleteWorkoutData
 };
