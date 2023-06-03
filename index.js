@@ -10,6 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', require('./src/routes/authRoutes'));
 app.use('/userdata', require('./src/routes/userDataRoutes'));
+app.use('/userhistory', require('./src/routes/userHistoryRoutes'));
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
