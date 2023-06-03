@@ -3,6 +3,13 @@ const WorkoutData = require('../models/workoutDataModel');
 const inputWorkoutData = async (req, res) => {
 
     const { type, calories_per_reps, bicep, tricep, shoulder, chest, abs, thigh, butt, leg } = req.body;
+    const { role } = req.decodedToken;
+
+    if (role !== 'admin') {
+
+        return res.status(403).json({ success: false, message: 'Forbidden' });
+
+    }
 
     try {
 
