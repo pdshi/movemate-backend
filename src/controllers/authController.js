@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const register = async (req, res) => {
 
     const { email, password, key } = req.body;
+    const { role } = req.body || 'user';
 
     //check email and password if they are empty
     if (!email || !password) {
@@ -42,9 +43,9 @@ const register = async (req, res) => {
         // Hash the password and create a new admin
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = await User.create({ display_name, email, password: hashedPassword, provider });
+        const newUser = await User.create({ display_name, email, password: hashedPassword, provider, role });
 
-        res.status(201).json({ success: true, message: 'User created successfully' + newUser.display_name });
+        res.status(201).json({ success: true, message: 'User created successfully ' + newUser.display_name });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -90,7 +91,7 @@ const login = async (req, res) => {
         }
 
         // Create and assign a token
-        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url }, process.env.JWT_SECRET, { expiresIn: '365d' });
+        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
         res.cookie('token', `Bearer ${token}`, {
@@ -133,7 +134,7 @@ const firebaseLogin = async (req, res) => {
         user.photo_url = photo_url;
         await user.save();
 
-        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url }, process.env.JWT_SECRET, { expiresIn: '365d' });
+        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
         res.cookie('token', `Bearer ${token}`, {
