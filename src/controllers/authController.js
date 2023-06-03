@@ -116,7 +116,6 @@ const firebaseLogin = async (req, res) => {
         const email = req.decodedToken?.email || null;
         const photo_url = req.decodedToken?.picture || null;
         const provider = req.decodedToken?.firebase.sign_in_provider;
-        const role = 'user';
 
         let user = await User.findOne({ where: { email } });
         if (user) {
@@ -125,7 +124,7 @@ const firebaseLogin = async (req, res) => {
 
         } else {
 
-            user = await User.create({ user_id: uid, display_name, email, photo_url, provider, role });
+            user = await User.create({ user_id: uid, display_name, email, photo_url, provider });
 
         }
 
@@ -135,7 +134,7 @@ const firebaseLogin = async (req, res) => {
         user.photo_url = photo_url;
         await user.save();
 
-        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role }, process.env.JWT_SECRET, { expiresIn: '365d' });
+        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
         res.cookie('token', `Bearer ${token}`, {

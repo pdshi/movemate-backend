@@ -32,6 +32,11 @@ User.init(
             type: DataTypes.STRING(50),
             allowNull: false,
         },
+        role: {
+            type: DataTypes.ENUM('user', 'admin'),
+            defaultValue: 'user',
+            allowNull: false,
+        },
         last_login: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
