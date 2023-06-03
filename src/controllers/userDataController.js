@@ -3,7 +3,7 @@ const UserData = require('../models/userDataModel');
 const inputUserData = async (req, res) => {
 
     const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
-    const user_id = req.decodedToken;
+    const { user_id } = req.decodedToken;
 
     try {
 
@@ -58,7 +58,7 @@ const getUserData = async (req, res) => {
 const editUserData = async (req, res) => {
 
     const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
-    const user_id = req.decodedToken;
+    const { user_id } = req.decodedToken;
 
     try {
 
