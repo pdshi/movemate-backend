@@ -24,11 +24,11 @@ UserData.init(
             allowNull: false,
         },
         height: {
-            type: DataTypes.DECIMAL(4, 2),
+            type: DataTypes.DECIMAL(5, 2),
             allowNull: false,
         },
         weight: {
-            type: DataTypes.DECIMAL(3, 2),
+            type: DataTypes.DECIMAL(5, 2),
             allowNull: false,
         },
         goal: {
@@ -36,7 +36,7 @@ UserData.init(
             allowNull: false,
         },
         goal_weight: {
-            type: DataTypes.DECIMAL(3, 2),
+            type: DataTypes.DECIMAL(5, 2),
             allowNull: false,
         },
         spare_days: {

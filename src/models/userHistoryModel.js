@@ -23,7 +23,7 @@ UserHistory.init(
             allowNull: false,
         },
         calories: {
-            type: DataTypes.DOUBLE(5, 2),
+            type: DataTypes.DOUBLE(8, 2),
             allowNull: false,
         },
         date: {
