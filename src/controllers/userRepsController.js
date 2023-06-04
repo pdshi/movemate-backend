@@ -1,92 +1,96 @@
-const UserData = require('../models/userDataModel');
+const UserReps = require('../models/userRepsModel');
 
-const inputUserData = async (req, res) => {
+const inputUserReps = async (req, res) => {
 
-    const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
+    const { type, reps } = req.body;
     const user_id = req.decodedToken;
 
     try {
 
-        let userData = await UserData.findOne({ where: { user_id } });
-        if (userData) {
+        let userReps = await UserReps.findOne({ where: { user_id, type } });
+        if (userReps) {
 
-            return res.status(409).json({ success: false, message: 'User data already exists' });
+            return res.status(409).json({ success: false, message: 'User reps data already exists' });
 
         } else {
 
-            userData = await UserData.create({ user_id, gender, age, height, weight, goal, goal_weight, spare_days });
+            userReps = await UserData.create({ user_id, type, reps });
 
         }
 
-        return res.status(200).json({ status: true, message: 'User data created successfully' });
+        return res.status(200).json({ status: true, message: 'User reps created successfully' });
 
     } catch (error) {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 }
 
-const getUserData = async (req, res) => {
+const getUserReps = async (req, res) => {
 
+    const { type } = req.body;
     const { user_id } = req.decodedToken;
+
+    if (!type) {
+
+        return res.status(400).json({ success: false, message: 'Please provide all required fields' });
+
+    }
 
     try {
 
-        const userData = await UserData.findOne({ where: { user_id } });
+        const userReps = await UserReps.findOne({ where: { user_id, type } });
+        if (!userReps) {
 
-        if (!userData) {
-
-            return res.status(404).json({ success: false, message: 'User data not found' });
+            return res.status(404).json({ success: false, message: 'User reps not found' });
 
         }
 
-        return res.status(200).json({ status: true, message: 'User data found', data: userData });
+        return res.status(200).json({ status: true, message: 'User reps found', data: userReps });
 
     } catch (error) {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 };
 
+const editUserReps = async (req, res) => {
 
-const editUserData = async (req, res) => {
-
-    const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
+    const { type, reps } = req.body;
     const user_id = req.decodedToken;
+
+    if (!type || !reps) {
+
+        return res.status(400).json({ success: false, message: 'Please provide all required fields' });
+
+    };
 
     try {
 
-        let userData = await UserData.findOne({ where: { user_id } });
+        let userReps = await UserReps.findOne({ where: { user_id, type } });
+        if (!userReps) {
 
-        if (!userData) {
-
-            return res.status(404).json({ success: false, message: 'User data not found' });
+            return res.status(404).json({ success: false, message: 'User reps data not found' });
 
         }
 
-        userData.gender = gender ?? userData.gender;
-        userData.age = age ?? userData.age;
-        userData.height = height ?? userData.height;
-        userData.weight = weight ?? userData.weight;
-        userData.goal = goal ?? userData.goal;
-        userData.goal_weight = goal_weight ?? userData.goal_weight;
-        userData.spare_days = spare_days ?? userData.spare_days;
+        userReps.reps = reps || userReps.reps;
 
-        await userData.save();
+        await userReps.save();
 
-        return res.status(200).json({ status: true, message: 'User data updated successfully' });
+        return res.status(200).json({ status: true, message: 'User reps data updated successfully' });
 
     } catch (error) {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 };

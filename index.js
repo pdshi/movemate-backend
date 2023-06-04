@@ -11,10 +11,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', require('./src/routes/authRoutes'));
 app.use('/userdata', require('./src/routes/userDataRoutes'));
 app.use('/userhistory', require('./src/routes/userHistoryRoutes'));
-
+app.use('/userreps', require('./src/routes/userRepsRoutes'));
 app.use('/workout', require('./src/routes/workoutDataRoutes'));
-app.use('/reps', require('./src/routes/userRepsRoutes'));
-
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
