@@ -22,7 +22,7 @@ const inputUserHistory = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 }
@@ -40,14 +40,14 @@ const getUserHistory = async (req, res) => {
         UserHistory.findAll({
             where: {
                 user_id,
-                createdAt: {
+                date: {
                     [Op.between]: [startDate, endDate],
                 },
             },
         }).then((results) => {
             return res.status(200).json({ status: true, message: 'User history found', data: results });
         }).catch((error) => {
-            return res.status(404).json({ success: false, message: error });
+            return res.status(404).json({ success: false, message: error.message });
         });
 
 
@@ -55,7 +55,7 @@ const getUserHistory = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 };

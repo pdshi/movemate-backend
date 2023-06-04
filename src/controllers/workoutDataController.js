@@ -30,7 +30,7 @@ const inputWorkoutData = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 }
@@ -56,7 +56,7 @@ const getWorkoutData = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 };
@@ -99,7 +99,7 @@ const editWorkoutData = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 };
@@ -132,7 +132,7 @@ const deleteWorkoutData = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 };
