@@ -61,6 +61,30 @@ const getWorkoutData = async (req, res) => {
     }
 };
 
+const getAllWorkoutDataType = async (req, res) => {
+
+    try {
+
+        const workoutDataType = await WorkoutData.findAll({ attributes: ['type'] });
+
+        if (!workoutDataType) {
+
+            return res.status(404).json({ success: false, message: 'Workout data not found' });
+
+        }
+
+        return res.status(200).json({ status: true, message: 'All workout data type found', data: workoutDataType });
+
+    }
+    catch (error) {
+
+        // Handle any errors that occur during the process
+        console.error(error);
+        return res.status(500).json({ success: false, message: error.message });
+
+    }
+};
+
 const editWorkoutData = async (req, res) => {
 
     const { type, calories_per_reps, bicep, tricep, shoulder, chest, abs, thigh, butt, leg } = req.body;
@@ -140,6 +164,7 @@ const deleteWorkoutData = async (req, res) => {
 module.exports = {
     inputWorkoutData,
     getWorkoutData,
+    getAllWorkoutDataType,
     editWorkoutData,
     deleteWorkoutData
 };
