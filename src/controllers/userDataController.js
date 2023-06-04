@@ -24,7 +24,7 @@ const inputUserData = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 }
@@ -49,7 +49,7 @@ const getUserData = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 };
@@ -86,7 +86,7 @@ const editUserData = async (req, res) => {
 
         // Handle any errors that occur during the process
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
 
     }
 };

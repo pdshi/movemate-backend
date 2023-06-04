@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
 
-    const token = req.headers.authorization;
+    const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
 
@@ -22,7 +22,7 @@ const verifyToken = (req, res, next) => {
 
     } catch (error) {
 
-        return res.status(403).json({ success: false, message: 'Failed to authenticate token' });
+        return res.status(403).json({ success: false, message: error.message });
 
     }
 };

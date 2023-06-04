@@ -46,9 +46,9 @@ const register = async (req, res) => {
         const newUser = await User.create({ display_name, email, password: hashedPassword, provider, role });
 
         res.status(201).json({ success: true, message: 'User created successfully ' + newUser.display_name });
-    } catch (err) {
+    } catch (error) {
         console.log(err);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
@@ -98,12 +98,12 @@ const login = async (req, res) => {
             expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
         });
 
-        res.status(200).json({ success: true, message: 'Logged in successfully' });
+        res.status(200).json({ success: true, message: 'Logged in successfully', token });
 
-    } catch (err) {
+    } catch (error) {
 
         console.log(err);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({ success: false, message: error.message });
 
     }
 }
@@ -141,13 +141,13 @@ const firebaseLogin = async (req, res) => {
             expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
         });
 
-        return res.status(200).json({ token, status: true, message: 'Login successful' });
+        return res.status(200).json({ status: true, message: 'Login successful', token });
 
-    } catch (err) {
+    } catch (error) {
 
         console.error('Error verifying Firebase ID token or accessing database:', err);
 
-        return res.status(500).send({ status: false, message: 'Error verifying ID token or accessing database' });
+        return res.status(500).send({ status: false, message: error.message });
 
     }
 }
