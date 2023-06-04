@@ -5,6 +5,8 @@ const inputUserData = async (req, res) => {
     const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
     const { user_id } = req.decodedToken;
 
+    console.log(user_id)
+
     try {
 
         let userData = await UserData.findOne({ where: { user_id } });
@@ -70,13 +72,13 @@ const editUserData = async (req, res) => {
 
         }
 
-        userData.gender = gender ?? userData.gender;
-        userData.age = age ?? userData.age;
-        userData.height = height ?? userData.height;
-        userData.weight = weight ?? userData.weight;
-        userData.goal = goal ?? userData.goal;
-        userData.goal_weight = goal_weight ?? userData.goal_weight;
-        userData.spare_days = spare_days ?? userData.spare_days;
+        userData.gender = gender || userData.gender;
+        userData.age = age || userData.age;
+        userData.height = height || userData.height;
+        userData.weight = weight || userData.weight;
+        userData.goal = goal || userData.goal;
+        userData.goal_weight = goal_weight || userData.goal_weight;
+        userData.spare_days = spare_days || userData.spare_days;
 
         await userData.save();
 

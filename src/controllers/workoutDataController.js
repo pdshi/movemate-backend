@@ -81,15 +81,15 @@ const editWorkoutData = async (req, res) => {
 
         }
 
-        workoutData.calories_per_reps = calories_per_reps ?? workoutData.calories_per_reps;
-        workoutData.bicep = bicep ?? workoutData.bicep;
-        workoutData.tricep = tricep ?? workoutData.tricep;
-        workoutData.shoulder = shoulder ?? workoutData.shoulder;
-        workoutData.chest = chest ?? workoutData.chest;
-        workoutData.abs = abs ?? workoutData.abs;
-        workoutData.thigh = thigh ?? workoutData.thigh;
-        workoutData.butt = butt ?? workoutData.butt;
-        workoutData.leg = leg ?? workoutData.leg;
+        workoutData.calories_per_reps = calories_per_reps || workoutData.calories_per_reps;
+        workoutData.bicep = bicep || workoutData.bicep;
+        workoutData.tricep = tricep || workoutData.tricep;
+        workoutData.shoulder = shoulder || workoutData.shoulder;
+        workoutData.chest = chest || workoutData.chest;
+        workoutData.abs = abs || workoutData.abs;
+        workoutData.thigh = thigh || workoutData.thigh;
+        workoutData.butt = butt || workoutData.butt;
+        workoutData.leg = leg || workoutData.leg;
 
         await workoutData.save();
 

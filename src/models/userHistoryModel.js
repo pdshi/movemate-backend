@@ -36,7 +36,7 @@ UserHistory.init(
         sequelize,
         modelName: 'UserHistory',
         tableName: 'user_history',
-        timestamps: true,
+        timestamps: false,
         underscored: true,
     }
 );
