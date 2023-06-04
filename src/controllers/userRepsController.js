@@ -31,18 +31,11 @@ const inputUserReps = async (req, res) => {
 
 const getUserReps = async (req, res) => {
 
-    const { type } = req.body;
     const { user_id } = req.decodedToken;
-
-    if (!type) {
-
-        return res.status(400).json({ success: false, message: 'Please provide all required fields' });
-
-    }
 
     try {
 
-        const userReps = await UserReps.findOne({ where: { user_id, type } });
+        const userReps = await UserReps.findAll({ where: { user_id } });
         if (!userReps) {
 
             return res.status(404).json({ success: false, message: 'User reps not found' });
