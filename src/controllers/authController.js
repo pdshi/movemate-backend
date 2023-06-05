@@ -98,7 +98,7 @@ const login = async (req, res) => {
         //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
         // });
 
-        res.status(200).json({ success: true, message: 'Logged in successfully', token });
+        res.status(201).json({ success: true, message: 'Logged in successfully', token });
 
     } catch (error) {
 
@@ -118,11 +118,7 @@ const firebaseLogin = async (req, res) => {
         const provider = req.decodedToken?.firebase.sign_in_provider;
 
         let user = await User.findOne({ where: { email } });
-        if (user) {
-
-            return res.status(409).json({ success: false, message: 'User already exists' });
-
-        } else {
+        if (!user) {
 
             user = await User.create({ user_id: uid, display_name, email, photo_url, provider });
 
@@ -141,7 +137,7 @@ const firebaseLogin = async (req, res) => {
         //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
         // });
 
-        return res.status(200).json({ status: true, message: 'Login successful', token });
+        return res.status(201).json({ status: true, message: 'Login successful', token });
 
     } catch (error) {
 
