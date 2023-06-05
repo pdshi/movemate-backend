@@ -22,7 +22,7 @@ const inputUserData = async (req, res) => {
 
         }
 
-        return res.status(200).json({ status: true, message: 'User data created successfully' });
+        return res.status(200).json({ success: true, message: 'User data created successfully' });
 
     } catch (error) {
 
@@ -47,7 +47,7 @@ const getUserData = async (req, res) => {
 
         }
 
-        return res.status(200).json({ status: true, message: 'User data found', data: userData });
+        return res.status(200).json({ success: true, message: 'User data found', data: userData });
 
     } catch (error) {
 
@@ -87,7 +87,7 @@ const editUserData = async (req, res) => {
 
         await userData.save();
 
-        return res.status(200).json({ status: true, message: 'User data updated successfully' });
+        return res.status(200).json({ success: true, message: 'User data updated successfully' });
 
     } catch (error) {
 

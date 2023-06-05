@@ -137,13 +137,13 @@ const firebaseLogin = async (req, res) => {
         //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
         // });
 
-        return res.status(201).json({ status: true, message: 'Login successful', token });
+        return res.status(201).json({ success: true, message: 'Login successful', token });
 
     } catch (error) {
 
         console.error('Error verifying Firebase ID token or accessing database:', err);
 
-        return res.status(500).send({ status: false, message: error.message });
+        return res.status(500).send({ success: false, message: error.message });
 
     }
 }

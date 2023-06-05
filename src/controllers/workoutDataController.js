@@ -24,7 +24,7 @@ const inputWorkoutData = async (req, res) => {
 
         }
 
-        return res.status(200).json({ status: true, message: 'Workout data created successfully' });
+        return res.status(200).json({ success: true, message: 'Workout data created successfully' });
 
     } catch (error) {
 
@@ -49,7 +49,7 @@ const getWorkoutData = async (req, res) => {
 
         }
 
-        return res.status(200).json({ status: true, message: 'Workout data found', data: workoutData });
+        return res.status(200).json({ success: true, message: 'Workout data found', data: workoutData });
 
     }
     catch (error) {
@@ -73,7 +73,7 @@ const getAllWorkoutDataType = async (req, res) => {
 
         }
 
-        return res.status(200).json({ status: true, message: 'All workout data type found', data: workoutDataType });
+        return res.status(200).json({ success: true, message: 'All workout data type found', data: workoutDataType });
 
     }
     catch (error) {
@@ -117,7 +117,7 @@ const editWorkoutData = async (req, res) => {
 
         await workoutData.save();
 
-        return res.status(200).json({ status: true, message: 'Workout data updated successfully' });
+        return res.status(200).json({ success: true, message: 'Workout data updated successfully' });
 
     } catch (error) {
 
@@ -150,7 +150,7 @@ const deleteWorkoutData = async (req, res) => {
 
         await workoutData.destroy();
 
-        return res.status(200).json({ status: true, message: 'Workout data deleted successfully' });
+        return res.status(200).json({ success: true, message: 'Workout data deleted successfully' });
 
     } catch (error) {
 

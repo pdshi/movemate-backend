@@ -18,7 +18,7 @@ const inputUserReps = async (req, res) => {
 
         }
 
-        return res.status(200).json({ status: true, message: 'User reps created successfully' });
+        return res.status(200).json({ success: true, message: 'User reps created successfully' });
 
     } catch (error) {
 
@@ -42,7 +42,7 @@ const getUserReps = async (req, res) => {
 
         }
 
-        return res.status(200).json({ status: true, message: 'User reps found', data: userReps });
+        return res.status(200).json({ success: true, message: 'User reps found', data: userReps });
 
     } catch (error) {
 
@@ -77,7 +77,7 @@ const editUserReps = async (req, res) => {
 
         await userReps.save();
 
-        return res.status(200).json({ status: true, message: 'User reps data updated successfully' });
+        return res.status(200).json({ success: true, message: 'User reps data updated successfully' });
 
     } catch (error) {
 

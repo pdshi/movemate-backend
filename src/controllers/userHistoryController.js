@@ -16,7 +16,7 @@ const inputUserHistory = async (req, res) => {
 
         }
 
-        return res.status(200).json({ status: true, message: 'User history added successfully' });
+        return res.status(200).json({ success: true, message: 'User history added successfully' });
 
     } catch (error) {
 
@@ -45,7 +45,7 @@ const getUserHistory = async (req, res) => {
                 },
             },
         }).then((results) => {
-            return res.status(200).json({ status: true, message: 'User history found', data: results });
+            return res.status(200).json({ success: true, message: 'User history found', data: results });
         }).catch((error) => {
             return res.status(404).json({ success: false, message: error.message });
         });
