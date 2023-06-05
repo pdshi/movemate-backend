@@ -94,9 +94,9 @@ const login = async (req, res) => {
         const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
-        res.cookie('token', `Bearer ${token}`, {
-            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-        });
+        // res.cookie('token', `Bearer ${token}`, {
+        //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+        // });
 
         res.status(200).json({ success: true, message: 'Logged in successfully', token });
 
@@ -137,9 +137,9 @@ const firebaseLogin = async (req, res) => {
         const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
-        res.cookie('token', `Bearer ${token}`, {
-            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
-        });
+        // res.cookie('token', `Bearer ${token}`, {
+        //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
+        // });
 
         return res.status(200).json({ status: true, message: 'Login successful', token });
 
