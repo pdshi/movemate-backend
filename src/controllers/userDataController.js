@@ -16,7 +16,9 @@ const inputUserData = async (req, res) => {
 
         } else {
 
-            userData = await UserData.create({ user_id, gender, age, height, weight, goal, goal_weight, spare_days });
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+            userData = await UserData.create({ user_id, gender, age, height, weight, bmi, goal, goal_weight, spare_days });
 
         }
 
@@ -79,6 +81,9 @@ const editUserData = async (req, res) => {
         userData.goal = goal || userData.goal;
         userData.goal_weight = goal_weight || userData.goal_weight;
         userData.spare_days = spare_days || userData.spare_days;
+
+        const heightInMeters = userData.height / 100;
+        userData.bmi = userData.weight / (heightInMeters * heightInMeters);
 
         await userData.save();
 

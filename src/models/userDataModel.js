@@ -31,6 +31,10 @@ UserData.init(
             type: DataTypes.DECIMAL(5, 2),
             allowNull: false,
         },
+        bmi: {
+            type: DataTypes.DECIMAL(5, 2),
+            allowNull: false,
+        },
         goal: {
             type: DataTypes.ENUM('lose_weight', 'healthy', 'muscle_gain'),
             allowNull: false,
