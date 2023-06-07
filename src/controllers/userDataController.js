@@ -2,25 +2,59 @@ const UserData = require('../models/userDataModel');
 
 const inputUserData = async (req, res) => {
 
-    const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
+    const { display_name, photo_url, gender, age, height, weight, goal, goal_weight, frequency, day_start, wo_time } = req.body;
     const { user_id } = req.decodedToken;
-
-    console.log(user_id)
 
     try {
 
         let userData = await UserData.findOne({ where: { user_id } });
-        if (userData) {
+        if (!userData) {
 
-            return res.status(409).json({ success: false, message: 'User data already exists' });
-
-        } else {
-
-            const heightInMeters = height / 100;
-            const bmi = weight / (heightInMeters * heightInMeters);
-            userData = await UserData.create({ user_id, gender, age, height, weight, bmi, goal, goal_weight, spare_days });
+            userData = await UserData.create({ user_id });
 
         }
+
+        userData.display_name = display_name || userData.display_name;
+        userData.photo_url = photo_url || userData.photo_url;
+        userData.gender = gender || userData.gender;
+        userData.age = age || userData.age;
+        userData.height = height || userData.height;
+        userData.weight = weight || userData.weight;
+        userData.goal = goal || userData.goal;
+        userData.goal_weight = goal_weight || userData.goal_weight;
+        userData.frequency = frequency || userData.frequency;
+        userData.day_start = day_start || userData.day_start;
+        userData.wo_time = wo_time || userData.wo_time;
+
+        if (userData.height && userData.weight) {
+
+            const heightInMeters = userData.height / 100;
+            userData.bmi = userData.weight / (heightInMeters * heightInMeters);
+
+            if (userData.bmi < 18.75) {
+
+                userData.bmi_status = 'Underweight';
+
+            } else if (userData.bmi < 25) {
+
+                userData.bmi_status = 'Normal';
+
+            } else if (userData.bmi < 30) {
+
+                userData.bmi_status = 'Overweight';
+
+            } else if (userData.bmi < 40) {
+
+                userData.bmi_status = 'Obesity';
+
+            } else {
+
+                userData.bmi_status = 'Severe Obesity';
+
+            }
+        }
+
+        await userData.save();
 
         return res.status(200).json({ success: true, message: 'User data created successfully' });
 

@@ -37,7 +37,7 @@ UserData.init(
             type: DataTypes.DECIMAL(5, 2),
         },
         bmi_status: {
-            type: DataTypes.ENUM('underweight', 'normal', 'overweight', 'obesity', 'severe_obesity'),
+            type: DataTypes.ENUM('Underweight', 'Normal', 'Overweight', 'Obesity', 'Severe Obesity'),
         },
         goal: {
             type: DataTypes.ENUM('lose_weight', 'healthy', 'muscle_gain'),
