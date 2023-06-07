@@ -6,7 +6,7 @@ const { inputUserReps, getUserReps } = require('../controllers/userRepsControlle
 const router = express.Router();
 
 router.post('/input', verifyToken, inputUserReps);
-router.get('/get', verifyToken, getUserReps);
+router.post('/get', verifyToken, getUserReps);
 //router.put('/edit', verifyToken, editUserReps);
 
 module.exports = router;

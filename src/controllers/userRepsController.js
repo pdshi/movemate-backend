@@ -1,11 +1,19 @@
 const UserReps = require('../models/userRepsModel');
+const WorkoutData = require('../models/workoutDataModel');
 
 const inputUserReps = async (req, res) => {
 
     const { type, reps, sets, date, start, end } = req.body;
-    const user_id = req.decodedToken;
+    const { user_id } = req.decodedToken;
 
     try {
+
+        let workoutData = await WorkoutData.findOne({ where: { type } });
+        if (!workoutData) {
+
+            return res.status(404).json({ success: false, message: 'Workout data not found' });
+
+        }
 
         await UserReps.create({ user_id, type, reps, sets, date, start, end });
 
@@ -27,7 +35,7 @@ const getUserReps = async (req, res) => {
 
     try {
 
-        let userReps = await UserReps.findOne({ where: { user_id, date: new Date(current_date) } });
+        let userReps = await UserReps.findOne({ where: { user_id, date: current_date } });
         if (!userReps) {
 
             return res.status(404).json({ success: false, message: 'User reps not found' });

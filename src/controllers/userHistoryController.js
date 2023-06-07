@@ -8,6 +8,12 @@ const inputUserHistory = async (req, res) => {
     const { type, time, reps } = req.body;
     const user_id = req.decodedToken.user_id;
 
+    if (isNaN(reps)) {
+
+        return res.status(400).json({ success: false, message: 'Reps must be a number' });
+
+    }
+
     try {
 
         let workoutData = await WorkoutData.findOne({ where: { type } });

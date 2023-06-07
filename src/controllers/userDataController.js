@@ -81,11 +81,18 @@ const getUserData = async (req, res) => {
 
         }
 
-        if (!userData.height && !userData.weight && !userData.goal && !userData.goal_weight && !userData.frequency && !userData.day_start && !userData.wo_time) {
+        // check if required data null
+        if (userData.height == null || userData.weight == null || userData.goal == null || userData.goal_weight == null || userData.frequency == null || userData.day_start == null || userData.wo_time == null) {
 
             return res.status(400).json({ success: false, message: 'Required user data is not present' });
 
         }
+
+        // if (!userData.height && !userData.weight && !userData.goal && !userData.goal_weight && !userData.frequency && !userData.day_start && !userData.wo_time) {
+
+        //     return res.status(400).json({ success: false, message: 'Required user data is not present' });
+
+        // }
 
         return res.status(200).json({ success: true, message: 'User data found', data: userData });
 
