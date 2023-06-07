@@ -56,7 +56,7 @@ const inputUserData = async (req, res) => {
 
         await userData.save();
 
-        return res.status(200).json({ success: true, message: 'User data created successfully' });
+        return res.status(200).json({ success: true, message: 'User data input successfully', data: userData });
 
     } catch (error) {
 
@@ -81,6 +81,12 @@ const getUserData = async (req, res) => {
 
         }
 
+        if (!userData.height && !userData.weight && !userData.goal && !userData.goal_weight && !userData.frequency && !userData.day_start && !userData.wo_time) {
+
+            return res.status(400).json({ success: false, message: 'Required user data is not present' });
+
+        }
+
         return res.status(200).json({ success: true, message: 'User data found', data: userData });
 
     } catch (error) {
@@ -93,47 +99,47 @@ const getUserData = async (req, res) => {
 };
 
 
-const editUserData = async (req, res) => {
+// const editUserData = async (req, res) => {
 
-    const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
-    const { user_id } = req.decodedToken;
+//     const { gender, age, height, weight, goal, goal_weight, spare_days } = req.body;
+//     const { user_id } = req.decodedToken;
 
-    try {
+//     try {
 
-        let userData = await UserData.findOne({ where: { user_id } });
+//         let userData = await UserData.findOne({ where: { user_id } });
 
-        if (!userData) {
+//         if (!userData) {
 
-            return res.status(404).json({ success: false, message: 'User data not found' });
+//             return res.status(404).json({ success: false, message: 'User data not found' });
 
-        }
+//         }
 
-        userData.gender = gender || userData.gender;
-        userData.age = age || userData.age;
-        userData.height = height || userData.height;
-        userData.weight = weight || userData.weight;
-        userData.goal = goal || userData.goal;
-        userData.goal_weight = goal_weight || userData.goal_weight;
-        userData.spare_days = spare_days || userData.spare_days;
+//         userData.gender = gender || userData.gender;
+//         userData.age = age || userData.age;
+//         userData.height = height || userData.height;
+//         userData.weight = weight || userData.weight;
+//         userData.goal = goal || userData.goal;
+//         userData.goal_weight = goal_weight || userData.goal_weight;
+//         userData.spare_days = spare_days || userData.spare_days;
 
-        const heightInMeters = userData.height / 100;
-        userData.bmi = userData.weight / (heightInMeters * heightInMeters);
+//         const heightInMeters = userData.height / 100;
+//         userData.bmi = userData.weight / (heightInMeters * heightInMeters);
 
-        await userData.save();
+//         await userData.save();
 
-        return res.status(200).json({ success: true, message: 'User data updated successfully' });
+//         return res.status(200).json({ success: true, message: 'User data updated successfully' });
 
-    } catch (error) {
+//     } catch (error) {
 
-        // Handle any errors that occur during the process
-        console.error(error);
-        return res.status(500).json({ success: false, message: error.message });
+//         // Handle any errors that occur during the process
+//         console.error(error);
+//         return res.status(500).json({ success: false, message: error.message });
 
-    }
-};
+//     }
+// };
 
 module.exports = {
     inputUserData,
     getUserData,
-    editUserData
+    // editUserData
 };
