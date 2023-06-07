@@ -147,7 +147,7 @@ const firebaseLogin = async (req, res) => {
         let userData = await UserData.findOne({ where: { user_id: user.user_id } });
         if (userData) {
 
-            userData.photo_url = photo_url;
+            userData.photo_url = photo_url || userData.photo_url;
             await userData.save();
 
         }
