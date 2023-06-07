@@ -17,7 +17,6 @@ const register = async (req, res) => {
     if (!emailRegex.test(email)) {
         return res.status(400).json({ success: false, message: 'Invalid email' });
     }
-    let display_name = email.split("@")[0];
 
     // Validate the password input
     const passwordRegex = /^.{8,}$/;
@@ -43,9 +42,10 @@ const register = async (req, res) => {
         // Hash the password and create a new admin
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = await User.create({ display_name, email, password: hashedPassword, provider, role });
+        const newUser = await User.create({ email, password: hashedPassword, provider, role });
 
         res.status(201).json({ success: true, message: 'User created successfully ' + newUser.display_name });
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: error.message });
@@ -94,9 +94,9 @@ const login = async (req, res) => {
         const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
-        // res.cookie('token', `Bearer ${token}`, {
-        //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-        // });
+        res.cookie('token', `Bearer ${token}`, {
+            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+        });
 
         res.status(201).json({ success: true, message: 'Logged in successfully', token });
 
@@ -133,9 +133,9 @@ const firebaseLogin = async (req, res) => {
         const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
-        // res.cookie('token', `Bearer ${token}`, {
-        //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
-        // });
+        res.cookie('token', `Bearer ${token}`, {
+            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
+        });
 
         return res.status(201).json({ success: true, message: 'Login successful', token });
 
