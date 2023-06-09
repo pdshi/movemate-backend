@@ -11,20 +11,12 @@ User.init(
             defaultValue: () => uuidv4(),
             primaryKey: true,
         },
-        display_name: {
-            type: DataTypes.STRING(150),
-            allowNull: false,
-        },
         email: {
             type: DataTypes.STRING(255),
             unique: true,
             allowNull: false,
         },
         password: {
-            type: DataTypes.STRING(255),
-            allowNull: true,
-        },
-        photo_url: {
             type: DataTypes.STRING(255),
             allowNull: true,
         },

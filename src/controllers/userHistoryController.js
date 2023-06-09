@@ -1,13 +1,29 @@
 const UserHistory = require('../models/userHistoryModel');
+const WorkoutData = require('../models/workoutDataModel');
 const User = require('../models/userModel');
 const { Op } = require('sequelize');
 
 const inputUserHistory = async (req, res) => {
 
-    const { type, time, calories } = req.body;
+    const { type, time, reps } = req.body;
     const user_id = req.decodedToken.user_id;
 
+    if (isNaN(reps)) {
+
+        return res.status(400).json({ success: false, message: 'Reps must be a number' });
+
+    }
+
     try {
+
+        let workoutData = await WorkoutData.findOne({ where: { type } });
+        if (!workoutData) {
+
+            return res.status(404).json({ success: false, message: 'Workout data not found' });
+
+        }
+
+        const calories = workoutData.calories_per_reps * reps;
 
         let user = await User.findOne({ where: { user_id } });
         if (user) {
@@ -45,9 +61,13 @@ const getUserHistory = async (req, res) => {
                 },
             },
         }).then((results) => {
+
             return res.status(200).json({ success: true, message: 'User history found', data: results });
+
         }).catch((error) => {
+
             return res.status(404).json({ success: false, message: error.message });
+
         });
 
 

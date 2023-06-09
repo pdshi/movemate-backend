@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const UserData = require('../models/userDataModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -17,7 +18,6 @@ const register = async (req, res) => {
     if (!emailRegex.test(email)) {
         return res.status(400).json({ success: false, message: 'Invalid email' });
     }
-    let display_name = email.split("@")[0];
 
     // Validate the password input
     const passwordRegex = /^.{8,}$/;
@@ -43,9 +43,10 @@ const register = async (req, res) => {
         // Hash the password and create a new admin
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = await User.create({ display_name, email, password: hashedPassword, provider, role });
+        const newUser = await User.create({ email, password: hashedPassword, provider, role });
 
-        res.status(201).json({ success: true, message: 'User created successfully ' + newUser.display_name });
+        res.status(201).json({ success: true, message: 'User created successfully'});
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: error.message });
@@ -91,14 +92,20 @@ const login = async (req, res) => {
         }
 
         // Create and assign a token
-        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
+        const token = jwt.sign({
+            user_id: user.user_id,
+            display_name: user.display_name,
+            email: user.email,
+            photo_url: user.photo_url,
+            role: user.role
+        }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
-        // res.cookie('token', `Bearer ${token}`, {
-        //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-        // });
+        res.cookie('token', `Bearer ${token}`, {
+            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+        });
 
-        res.status(201).json({ success: true, message: 'Logged in successfully', token });
+        res.status(200).json({ success: true, message: 'Logged in successfully', token });
 
     } catch (error) {
 
@@ -124,18 +131,39 @@ const firebaseLogin = async (req, res) => {
 
         }
 
+        if (user.provider !== provider) {
+
+            return res.status(401).json({
+                success: false,
+                message: 'You are already registered with basic email, try login with email and password instead'
+            })
+
+        }
+
         user.last_login = new Date();
-        user.display_name = display_name;
         user.email = email;
-        user.photo_url = photo_url;
         await user.save();
 
-        const token = jwt.sign({ user_id: user.user_id, display_name: user.display_name, email: user.email, photo_url: user.photo_url, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' });
+        let userData = await UserData.findOne({ where: { user_id: user.user_id } });
+        if (userData) {
+
+            userData.photo_url = photo_url || userData.photo_url;
+            await userData.save();
+
+        }
+
+        const token = jwt.sign({
+            user_id: user.user_id,
+            display_name: user.display_name,
+            email: user.email,
+            photo_url: userData.photo_url,
+            role: user.role
+        }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Set cookies in the response
-        // res.cookie('token', `Bearer ${token}`, {
-        //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
-        // });
+        res.cookie('token', `Bearer ${token}`, {
+            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // Set expiration to one year from now
+        });
 
         return res.status(201).json({ success: true, message: 'Login successful', token });
 

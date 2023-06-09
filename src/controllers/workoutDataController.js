@@ -2,7 +2,7 @@ const WorkoutData = require('../models/workoutDataModel');
 
 const inputWorkoutData = async (req, res) => {
 
-    const { type, calories_per_reps, bicep, tricep, shoulder, chest, abs, thigh, butt, leg } = req.body;
+    const { type, ceil, floor, duration, calories_per_reps, bicep, tricep, shoulder, chest, abs, thigh, butt, leg } = req.body;
     const { role } = req.decodedToken;
 
     if (role !== 'admin') {
@@ -20,7 +20,7 @@ const inputWorkoutData = async (req, res) => {
 
         } else {
 
-            workoutData = await WorkoutData.create({ type, calories_per_reps, bicep, tricep, shoulder, chest, abs, thigh, butt, leg });
+            workoutData = await WorkoutData.create({ type, ceil, floor, duration, calories_per_reps, bicep, tricep, shoulder, chest, abs, thigh, butt, leg });
 
         }
 
@@ -87,7 +87,7 @@ const getAllWorkoutDataType = async (req, res) => {
 
 const editWorkoutData = async (req, res) => {
 
-    const { type, calories_per_reps, bicep, tricep, shoulder, chest, abs, thigh, butt, leg } = req.body;
+    const { type, ceil, floor, duration, calories_per_reps, bicep, tricep, shoulder, chest, abs, thigh, butt, leg } = req.body;
     const { role } = req.decodedToken;
 
     if (role !== 'admin') {
@@ -105,6 +105,9 @@ const editWorkoutData = async (req, res) => {
 
         }
 
+        workoutData.ceil = ceil || workoutData.ceil;
+        workoutData.floor = floor || workoutData.floor;
+        workoutData.duration = duration || workoutData.duration;
         workoutData.calories_per_reps = calories_per_reps || workoutData.calories_per_reps;
         workoutData.bicep = bicep || workoutData.bicep;
         workoutData.tricep = tricep || workoutData.tricep;

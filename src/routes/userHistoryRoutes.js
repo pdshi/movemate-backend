@@ -6,6 +6,6 @@ const { inputUserHistory, getUserHistory, editUserHistory } = require('../contro
 const router = express.Router();
 
 router.post('/input', verifyToken, inputUserHistory);
-router.get('/get', verifyToken, getUserHistory);
+router.post('/get', verifyToken, getUserHistory);
 
 module.exports = router;

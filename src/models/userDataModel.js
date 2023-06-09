@@ -14,38 +14,45 @@ UserData.init(
             type: DataTypes.STRING(100),
             allowNull: false,
         },
+        display_name: {
+            type: DataTypes.STRING(150),
+        },
+        photo_url: {
+            type: DataTypes.STRING(255),
+        },
         gender: {
             // enum of male or female only, 
             type: DataTypes.ENUM('male', 'female'),
-            allowNull: false,
         },
         age: {
             type: DataTypes.INTEGER,
-            allowNull: false,
         },
         height: {
             type: DataTypes.DECIMAL(5, 2),
-            allowNull: false,
         },
         weight: {
             type: DataTypes.DECIMAL(5, 2),
-            allowNull: false,
         },
         bmi: {
             type: DataTypes.DECIMAL(5, 2),
-            allowNull: false,
+        },
+        bmi_status: {
+            type: DataTypes.ENUM('Underweight', 'Normal', 'Overweight', 'Obesity', 'Severe Obesity'),
         },
         goal: {
             type: DataTypes.ENUM('lose_weight', 'healthy', 'muscle_gain'),
-            allowNull: false,
         },
         goal_weight: {
             type: DataTypes.DECIMAL(5, 2),
-            allowNull: false,
         },
-        spare_days: {
+        frequency: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+        },
+        day_start: {
+            type: DataTypes.ENUM('today', 'tomorrow'),
+        },
+        wo_time: {
+            type: DataTypes.ENUM('morning', 'afternoon', 'night'),
         },
         created_at: {
             type: DataTypes.DATE,

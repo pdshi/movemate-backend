@@ -14,6 +14,18 @@ WorkoutData.init(
             type: DataTypes.STRING(50),
             allowNull: false,
         },
+        ceil: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        floor: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        duration: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         calories_per_reps: {
             type: DataTypes.DOUBLE(8, 2),
             allowNull: false,

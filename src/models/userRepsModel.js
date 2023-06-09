@@ -22,6 +22,22 @@ UserReps.init(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        sets: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        date: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
+        start: {
+            type: DataTypes.TIME,
+            allowNull: false,
+        },
+        end: {
+            type: DataTypes.TIME,
+            allowNull: false,
+        },
         created_at: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
