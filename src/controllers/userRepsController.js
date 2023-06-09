@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+
 const UserReps = require('../models/userRepsModel');
 const WorkoutData = require('../models/workoutDataModel');
 
@@ -35,35 +37,41 @@ const getUserReps = async (req, res) => {
 
     try {
 
-        let userReps = await UserReps.findOne({ where: { user_id, date: current_date } });
+        // Get the current date
+        const currentDate = new Date(current_date);
+
+        // Set the start and end time of the day
+        const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+        const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+
+        let userReps = await UserReps.findOne({
+            where: {
+                user_id,
+                date: {
+                    [Op.gte]: startDate,
+                    [Op.lt]: endDate
+                }
+            }
+        });
         if (!userReps) {
 
             return res.status(404).json({ success: false, message: 'User reps not found' });
 
         }
 
-        userReps = await UserReps.findAll({ where: { user_id, created_at: userReps.created_at } });
+        const createdAtStart = new Date(userReps.created_at.getFullYear(), userReps.created_at.getMonth(), userReps.created_at.getDate());
+        const createdAtEnd = new Date(userReps.created_at.getFullYear(), userReps.created_at.getMonth(), userReps.created_at.getDate() + 1);
 
-
-        // let addDate = 1;
-        // // infinite while loop, exit with break
-        // while (true) {
-
-        //     // new date and + addDate
-        //     let newDate = new Date(current_date);
-        //     newDate.setDate(newDate.getDate() + addDate);
-
-        //     let nextUserReps = await UserReps.findAll({ where: { user_id, date: newDate } });
-        //     if (!nextUserReps) break;
-
-        //     // add nextUserReps to userReps
-        //     userReps = [...userReps, ...nextUserReps];
-
-        //     addDate++;
-
-        // }
-
-
+        // Find user reps created on the same day
+        userReps = await UserReps.findAll({
+            where: {
+                user_id,
+                created_at: {
+                    [Op.gte]: createdAtStart,
+                    [Op.lt]: createdAtEnd,
+                },
+            },
+        });
 
         return res.status(200).json({ success: true, message: 'User reps found', data: userReps });
 
