@@ -22,7 +22,7 @@ admin.initializeApp({
 function verifyFirebaseToken(req, res, next) {
 
     // Get the ID token from the request headers or query parameters
-    const token = req.headers.authorization || req.body.token;
+    const token = req.headers.authorization.split(' ')[1];
     if (!token) {
         // Return an error if no ID token is provided
         return res.status(401).send('Authorization token is required');
