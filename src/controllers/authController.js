@@ -109,7 +109,7 @@ const login = async (req, res) => {
 
     } catch (error) {
 
-        console.log(err);
+        console.log(error);
         res.status(500).json({ success: false, message: error.message });
 
     }
@@ -147,7 +147,7 @@ const firebaseLogin = async (req, res) => {
         let userData = await UserData.findOne({ where: { user_id: user.user_id } });
         if (userData) {
 
-            userData.photo_url = photo_url || userData.photo_url;
+            userData.photo_url = photo_url || userData?.photo_url;
             await userData.save();
 
         }
@@ -156,7 +156,7 @@ const firebaseLogin = async (req, res) => {
             user_id: user.user_id,
             display_name: user.display_name,
             email: user.email,
-            photo_url: userData.photo_url,
+            photo_url: userData?.photo_url,
             role: user.role
         }, process.env.JWT_SECRET, { expiresIn: '365d' });
 
@@ -169,7 +169,7 @@ const firebaseLogin = async (req, res) => {
 
     } catch (error) {
 
-        console.error('Error verifying Firebase ID token or accessing database:', err);
+        console.error('Error verifying Firebase ID token or accessing database:', error);
 
         return res.status(500).send({ success: false, message: error.message });
 
